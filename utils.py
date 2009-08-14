@@ -33,7 +33,7 @@ def interweave(in1, in2, maxdelay=100):
   return r
 
 def speedcalc(color1, color2, time):
-  factor = 1777.647 # The magic Speed-Time translation factor
+  factor = 1777.777 # The magic Speed-Time translation factor
   length = max(abs(color1[0]-color2[0]), abs(color1[1]-color2[1]), abs(color1[2]-color2[2]))
   speed = int((length * factor) / time)
   return speed
