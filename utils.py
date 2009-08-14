@@ -42,3 +42,5 @@ def asciicolor(color):
     colstr += hex(c / 16)[2]
     colstr += hex(c % 16)[2]
   return colstr
+
+def makeprogram

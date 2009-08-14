@@ -2,10 +2,11 @@ from utils import speedcalc
 from utils import asciicolor
 
 class ColorStream:
-  def __init__(self):
+  def __init__(self, id):
     self.time = 0
     self.commands = {}
     self.lastcolor = (0,0,0)
+    self.id = id
 
   def wait(self, time):
     self.time += time
@@ -22,14 +23,14 @@ class ColorStream:
     self.commands[self.time] = ('fade', color, speed)
     self.time += time
 
-  def createCommands(self, id):
+  def createCommands(self):
     cmds = {}
     for e in self.commands:
       time = e
       cmd = self.commands[time]
       if cmd[0] == 'set':
-        cstring = 'C ' + id + ' ' + asciicolor(cmd[1])
+        cstring = 'C ' + self.id + ' ' + asciicolor(cmd[1])
       else:
-        cstring = 'F ' + id + ' ' + asciicolor(cmd[1]) + ' ' + str(cmd[2])
+        cstring = 'F ' + self.id + ' ' + asciicolor(cmd[1]) + ' ' + str(cmd[2])
       cmds[time] = cstring
     return cmds
