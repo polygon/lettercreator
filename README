@@ -1,1 +1,59 @@
-Have fun
+Introduction:
+
+Do what you want with the code. This was written entirely for fun. I've just
+started learning Python, so please be gracious that the code is not perfect.
+It's also quickly hacked together and was adopted as the need arised which
+doesn't make things better :). Anyway, have fun. If you have questions or
+otherwise want to talk to me, you can reach me via Jabber:
+   polygon@jabber.ccc.de
+
+Now for some whacky documentation:
+
+LetterCreator is a little tool for creating colorful animations on the large
+CCC-letters standing by the lake at HAR2009. The letters have to be
+programmed in a serial way, are however capable of parallel operation (there
+can be a different fading for each LED go on at the same time). This
+collection of python stuff tries to enable programming the letters in a
+parallel way.
+
+The basic class for defining color transitions is ColorStream. It describes
+the color transition over time for a specific LED/letter/whatever (basically
+everything that can be defined by the ID-field). The methods "wait",
+"setColor" and "fadeColor". So if we want to let the first letter start
+from black, then fade to red, white, green and back to black, this would
+look like this:
+
+C1 = ColorStream('1')
+C1.setColor((0,0,0))
+C1.wait(1000)
+C1.fadeColor((255,0,0),2000)
+C1.fadeColor((255,255,255),4000)
+C1.fadeColor((0,255,0),1000)
+C1.fadeColor((0,0,0),8000)
+C1.setColor((0,0,0))
+
+Please note, the durations for fadings are in ms, the conversion to the
+speed parameter is done internally and you will get a warning if speed
+goes out of allowed range (>1000).
+
+The field "commands" will now contain a dictionary having the time when
+the command should occur as key and the command itself as value. The
+commands from several parallel ColorStreams can now be interweaved
+into one big dictionary. If times collide, the command will be continously
+delayed by 10ms (minimum execution time) until a free slot is found.
+If there is too much going on in parallel, this delay can reach significant
+values and if it's more than 100ms, an exception will be raised. Either
+change the maximum value or reduce the amound of concurrent events to
+remove this error. An example for interweaving:
+
+final = interweave(C1.commands, C2.commands)
+final = interweave(final, C3.commands)
+
+Use "makeprogram" to create the final program which runs on the installation.
+This function will analyse the stream of commands and will insert
+wait-functions as needed. This is usually a tedious task to do by hand for
+complex animations and the main reason that this code was written.
+
+You find the complete example in "simple.py". A more complex example which
+fades each individual block in tones of orange, throwing in quick fades
+to blue-green for whole letters, is found in "redfader.py".

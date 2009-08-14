@@ -1,4 +1,6 @@
-def interweave(a, b, maxdelay=100):
+def interweave(in1, in2, maxdelay=100):
+  a = in1
+  b = in2
   r = {}
   a_keys = a.keys()
   a_keys.sort()
@@ -43,4 +45,13 @@ def asciicolor(color):
     colstr += hex(c % 16)[2]
   return colstr
 
-def makeprogram
+def makeprogram(cmdlist):
+  times = cmdlist.keys()
+  times.sort()
+  lasttime = times[0]
+  times.pop(0)
+  for time in times:
+    print(cmdlist[lasttime])
+    if (time - lasttime) > 29:
+      print('W ' + str(time - lasttime - 20))
+    lasttime = time
