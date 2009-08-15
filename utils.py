@@ -1,6 +1,6 @@
 def interweave(in1, in2, maxdelay=100):
-  a = in1
-  b = in2
+  a = in1[:]
+  b = in2[:]
   r = {}
   a_keys = a.keys()
   a_keys.sort()
